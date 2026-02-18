@@ -12,33 +12,41 @@ import {
 } from "lucide-react";
 
 const IndexPage = ({ onNext }) => (
-  <div className="flex flex-col items-center justify-center min-h-screen bg-[#e62429] text-white overflow-hidden relative font-sans">
-    <div className="absolute top-5 animate-fade-in z-10">
+  <div className="flex flex-col items-center justify-between h-screen bg-[#e62429] text-white overflow-hidden relative font-sans py-6 px-4">
+    {/* Top Section: Logo - Scaled down for the 550px width */}
+    <div className="animate-fade-in z-10 w-full flex justify-center">
       <img
         src="/assets/logo.png"
         alt="Logo"
-        className="w-[460px] max-w-[90%] rounded-lg"
+        className="w-[380px] max-w-full rounded-lg shadow-xl border-2 border-white/10"
       />
     </div>
 
-    <div className="absolute top-0 animate-fade-in z-0 flex justify-center">
-      <img
-        src="/assets/spiderman.png"
-        alt="Spider-Man"
-        className="w-[250px] animate-swing origin-top"
-      />
+    {/* Middle Section: Spider-Man */}
+    <div className="flex-1 flex items-start justify-center relative w-full -mt-25">
+      <div className="animate-fade-in z-0 transform transition-transform hover:scale-105 duration-700">
+        <img
+          src="/assets/spiderman.png"
+          alt="Spider-Man"
+          className="w-[240px] animate-swing origin-top"
+        />
+      </div>
     </div>
 
-    <div className="mt-[330px] flex flex-col items-center gap-10">
+    {/* Bottom Section: Button - Tighter spacing */}
+    <div className="animate-fade-in z-10 flex flex-col items-center gap-2 mt-2">
+      <p className="text-white/70 text-[10px] font-black uppercase tracking-[0.4em] animate-pulse italic">
+        Initiative Entry
+      </p>
       <Button
         variant="secondary"
-        className="h-auto p-4 px-6 rounded-2xl shadow-xl hover:scale-105 transition-transform bg-[#b11313] border-none"
+        className="h-14 px-8 rounded-2xl shadow-lg hover:scale-105 transition-all duration-300 bg-[#b11313] border-none group active:scale-95"
         onClick={onNext}
       >
         <img
           src="/assets/infinitystones.png"
           alt="Infinity Stones"
-          className="h-9 mx-1.5 hover:scale-120 transition-transform"
+          className="h-7 mx-2 group-hover:rotate-12 transition-transform duration-500"
         />
       </Button>
     </div>

@@ -1,47 +1,45 @@
-const path = require("path");
-const {
-  app,
-  BrowserWindow,
-  ipcMain,
-  desktopCapturer,
-  dialog,
-} = require("electron");
-const fs = require("fs");
+const { app, BrowserWindow, ipcMain } = require('electron');
+const path = require('node:path');
 
-let win;
+// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+if (require('electron-squirrel-startup')) {
+  app.quit();
+}
 
-function createWindow() {
-  win = new BrowserWindow({
+const createWindow = () => {
+  // Create the browser window.
+  const mainWindow = new BrowserWindow({
     width: 550,
     height: 600,
     webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
-  win.removeMenu();
-  win.loadFile("index.html");
-  //win.webContents.openDevTools();
+  // and load the index.html of the app.
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+  } else {
+    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+  }
 
-  ipcMain.handle("load-page", async (event, page) => {
-    try {
-        await win.loadFile(page);
-        return `✅ Page ${page} loaded`;
-    } catch (err) {
-        console.error(err);
-        throw err;
-    }
+  // Hide the default menu bar
+  mainWindow.removeMenu();
+  
+  // Open the DevTools.
+  // mainWindow.webContents.openDevTools();
+};
+
+app.on('ready', createWindow);
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
-}
-
-app.whenReady().then(() => {
-  createWindow();
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
-  });
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
 });

@@ -1,5 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld("electronAPI", {
-    loadPage: (page) => ipcRenderer.invoke("load-page", page),
+contextBridge.exposeInMainWorld('electronAPI', {
+  // Add any needed IPC bridges here
 });
